@@ -278,6 +278,7 @@ class PhismRunner:
     ):
         """Compile C/C++ code to MLIR using mlir-clang."""
         src_file, self.cur_file = self.cur_file, self.cur_file.replace(suffix, ".mlir")
+        log_file = src_file.replace(suffix, ".log")
 
         self.run_command(cmd=f'sed -i "s/static//g" {src_file}', shell=True)
         self.run_command(
@@ -304,6 +305,7 @@ class PhismRunner:
                 + (flags if flags else [])
             ),
             stdout=open(self.cur_file, "w"),
+            stderr=open(log_file, "w"),
             shell=True,
             env=self.env,
         )
